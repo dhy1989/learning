@@ -3,5 +3,5 @@ Java线程状态
    2.就绪状态(Runnable)
    3.运行状态(Running)
    4.阻塞状态(Blocked)
-   
+   5.死亡状态（Dead）
    
