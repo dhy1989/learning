@@ -41,7 +41,7 @@ class Ticket{
         lock.lock();
         try {
             if(tickets>0){
-                Thread.sleep(1000);
+                Thread.sleep(100);
                 tickets--;
                 System.out.println(Thread.currentThread().getName()+"--------剩余票数:"+tickets);
             }
