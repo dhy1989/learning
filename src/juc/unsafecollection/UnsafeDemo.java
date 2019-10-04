@@ -1,4 +1,4 @@
-package unsafecollection;
+package juc.unsafecollection;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package producerconsumer;
+package juc.producerconsumer;
 
 /**
  * <p>
