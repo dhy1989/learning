@@ -6,9 +6,6 @@ package threadpool;
  * @date 2019/10/9 12:39
  *
  * <p>
- *     FixedThreadPool  LinkedBlockingQueue
- *     SingleThreadExecutor   LinkedBlockingQueue
- *     CachedThreadPool    SynchronousQueue
  *
  * </p>
  */
