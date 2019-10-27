@@ -1,4 +1,4 @@
-package net.bio;
+package io.bio;
 
 import java.io.*;
 import java.net.ServerSocket;
