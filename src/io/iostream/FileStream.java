@@ -24,6 +24,7 @@ public class FileStream {
                 String s = new String(bytes, 0, len, "UTF-8");
                 System.out.println(s);
                 fos.write(bytes,0,len);
+                fos.flush();
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
