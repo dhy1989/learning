@@ -6,7 +6,7 @@ import java.io.*;
  * @author dinghy
  * @date 2019/10/28
  */
-public class BufferStream {
+public class BufferReaderDemo {
     public static void main(String[] args) {
         BufferedReader bufferedReader = null;
         BufferedWriter bufferedWriter = null;
