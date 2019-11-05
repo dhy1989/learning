@@ -1,0 +1,187 @@
+linux文件目录介绍:/dev:device设备缩写,该目录下存放的是linux的外部设备
+                 /etc:所有系统管理所需要的配置文件和子目录
+                 /home:存放普通用户的主目录,linux中每个用户都有一个自己的目录,一般该目录是根据用户账户名称命名的
+                 /mnc:系统提供该目录是为了让用户临时挂载别的文件系统的,我们可以将光驱挂载在/mnt/上,然后进入该目录查看
+                 /opt:主要安装额外软件,例如安装oracle数据库可以存放在该目录下
+                 /root:该目录为系统管理员,也成为超级权限者的用户主目录
+                 /tmp:临时文件
+                 /usr:和opt差不多,很多应用程序放到这个目录下
+                 /var:这个文件存放着在不断扩充着的东西,我们习惯将那些经常修改的文件放到此目录下,例如:日志文件
+
+将ip设置为固定ip:vi /etc/sysconfig/network-scripts/ifcfg-eth0
+   修改ONBOOT=yes
+   BOOTPROTO=static
+   添加
+   IPADDR=192.168.1.100
+   GATEWAY=192.168.1.1
+   DNS1=192.168.1.1
+  重启网卡:service network restart
+解决乱码问题:
+CentOS6.8版本在:编辑/etc/sysconfig/i18n  LANG="zh_CN.UTF-8"中文 LANG="en_US.UTF-8" 英文
+CentOS7.0版本: 编辑/etc/locale.conf
+修改hostname:
+编辑文件 vi /etc/sysconfig/network 然后重启设备
+修改hosts
+配置全局文件:
+vim /etc/hosts
+定义文件 ip 变量名 例如:192.168.10.102 hadoop102 然后重启设备
+windows系统配置hosts变量:
+进入C:\windows\system32\drivers\etc
+查看防火墙:service iptables status
+临时关闭防火墙状态:service iptables stop
+查看防火墙开机启动状态:chkconfig iptables --list
+开机关闭防火墙:chkconfig iptables off
+开机打开关闭防火墙:chkconfig iptables on
+将内存数据持久化硬盘:sync(关机和重启之前一定要使用)
+立刻关机:halt
+shutdown -h +时间  定时关机 时间单位是分钟
+shutdown -r +时间 定时重启 时间单位是分钟
+重启:reboot
+用户管理:
+   用户添加:useradd 用户名 例如:useradd ss
+   用户设置密码:passwd 用户名 例如:password ss
+   判断用户是否存在:id 用户名
+   切换用户:su 用户名 例如:su ss
+   删除用户:userdel 用户名 例如:userdel ss  删除用户时候,此用户不能正在使用,退出当前用户使用exit
+   查看用户:who 可以查看所有的历史记录
+           who am i 查询当前正在使用的用户
+           who 查询当前用户的用户名
+停止进程:ctrl+c
+清屏:Ctrl+l
+退出:Ctrl+q
+补全:Tab键
+上下键:查找执行过的命令
+查看当前目录绝对文件路径:pwd
+列出目录内容:ls -a全部文件连同隐藏
+               -d列出目录本身
+               -l列出文件详细信息,包括文件权限
+创建目录:mkdir  文件名
+创建多级目录:mkdir -p 层级目录
+创建文件:touch 文件名
+cd切换目录: cd 绝对路径
+           cd 相对路径
+           cd ~或cd 回到根目录
+           cd -回到上一次所在目录
+           cd ..回到上一级目录
+           cd -p如果要切换到的目标目录是一个符号连接，直接切换到符号连接指向的目标目录
+复制:cp 文件 目的地
+     cp -r  递归复制整个文件夹 目的地
+删除文件或目录:rmdir 空文件夹
+              rm 文件名
+              rm -rf 递归删除目录中所有内容
+移动文件:mv oldFile newFile重命名
+        mv /temp/moveFile /targetFilder 移动文件
+cat查看文件: -A:相当于 -vET 的整合选项，可列出一些特殊字符而不是空白而已；-----重要
+            -b ：列出行号，仅针对非空白行做行号显示，空白行不标行号！
+            -E ：将结尾的断行字节 $ 显示出来；
+            -n ：列出行号，连同空白行也会有行号，与 -b 的选项不同；  -----重要
+            -T ：将 [tab] 按键以 ^I 显示出来；
+            -v ：列出一些看不出来的特殊字符
+tac查看文件内容  :倒序查看
+more查看文件内容: 空白键 (space)：代表向下翻一页；
+                 Enter:代表向下翻『一行』；
+                 q:代表立刻离开 more ，不再显示该文件内容。
+                 Ctrl+F 向下滚动一屏
+                 Ctrl+B 返回上一屏
+                 = 输出当前行的行号
+                 :f 输出文件名和当前行的行号
+less查看文件内容:可以来回滚动
+                空白键   ：向下翻动一页；
+                [pagedown]：向下翻动一页；
+                [pageup] ：向上翻动一页；
+                /字串    ：向下搜寻『字串』的功能；
+                ?字串    ：向上搜寻『字串』的功能；
+                n        ：重复前一个搜寻 (与 / 或 ? 有关！)
+                N        ：反向的重复前一个搜寻 (与 / 或 ? 有关！)
+                q        ：离开 less 这个程序；
+head查看文件内容: head -n 10 文件 只查看文件前10行内容
+tail查看文件内容: tail -n 10 文件 只查看最后10行内容
+                 tail -f 文件 实时追踪该文档的更新
+重定向命令: ls -l >文件  查看的内容写入到文件里(注意会覆盖写)
+           ls -al>>文件  列表的内容追加到文件的末尾
+echo: echo 要显示的内容 >>存储的文件 将要显示的内容添加到文件中
+      echo 变量 显示变量的值
+ln软连接: ln -s 源文件 目标文件 给源文件创建一个软连接放到目标目录里 类似于创建了个快捷方式  打开用cd -p 软连接
+history:查看历史敲过的命令
+文件属性
+dr-xr-xr-x.   2 root root  4096 Jul 21 12:37 bin
+-rw-r--r--. 1 root root    0 Jul 21 13:52 duanyu.txt
+第1位: -表示文件
+       d表示目录
+第2-4位:
+       用户主的权限:r读;w写;x执行;-表示没有权限
+第5-7位:
+       用户组的权限:r读;w写;x执行;-表示没有权限
+第8-10位:
+       其他组权限:r读;w写;x执行;-表示没有权限
+第11位:
+      链接数
+第12位:
+      文件拥有者
+第13位:
+      用户组
+第14位:
+       文件大小
+第15位:
+       文件创建时间
+第16位:
+       文件名
+改变文件的权限:
+       chmod (u用户 g组 o其他 a所有)(+添加权限 -去掉权限)( w写 r读 x执行 ) 文件名
+ 改变文件的拥有者:
+      chown 最终拥有者 文件名
+      chgrp 最终组  文件名
+      chown 文件拥有者:组 文件名
+查找文件:
+    find 文件目录 -name 文件 根据文件名查找
+    find 文件目录 -user 用户名 根据为user的用户名查找
+    find 文件目录 -size +n(文件大于n) -n(文件小于n) n=
+二次查询:
+    ls -l |grep -n 文件
+查看进程:
+   ps -aux查询所有进程
+   ps -aux |grep 名称 查找某个程序名的的进程
+top查看进程:P cpu使用率排序    M内存使用率排序
+杀死进程:
+   kill -9 pid
+netstat显示网路统计信息:
+   etstat -anp | grep 50070
+压缩解压缩文件:
+gzip/gunzip 压缩/解压缩  文件名 只能单个文件压缩,源文件消失
+zip/unzip 压缩/解压缩  多个文件压缩,保留源文件
+tar -zcvf 文件名.tar.gz 要压缩的文件
+tar -zxvf 解压文件 -C 目录
+编辑定时任务 crontab -e
+            crontab -l 查看定时任务
+            crontab -r 删除定时任务
+给用户赋权限:
+root用户下 vi /etc/sudoers(如果没有写的权限需要添加权限)
+
+使用sFTP上传文件:
+　securecrt 按下ALT+P就开启新的会话 进行ftp操作。
+　　输入：help命令，显示该FTP提供所有的命令
+　　pwd:  查询linux主机所在目录（也就是远程主机目录）
+　　lpwd: 查询本地目录（一般指windows上传文件的目录：我们可以通过查看"选项"下拉框中的"会话选项",我们知道本地上传目录为：D:/我的文档）
+　　ls:   查询连接到当前linux主机所在目录有哪些文件
+　　lls:  查询当前本地上传目录有哪些文件
+　　lcd:  改变本地上传目录的路径
+　　cd:   改变远程上传目录
+　　get:  将远程目录中文件下载到本地目录
+　　put:  将本地目录中文件上传到远程主机（linux）
+　　quit: 断开FTP连接
+
+克隆centOS:
+1:vi /etc/udev/rules.d/70-persistent-net.rules
+ 删除第一个eth0,复制ATTR修改ip使用
+2:修改ip
+3:修改主机名称 vi /etc/sysconfig/network
+ 配置java环境变量:
+vi /etc/profile
+添加
+export JAVA_HOME=/opt/module/jdk1.8.0_181
+export PATH=$PATH:$JAVA_HOME/bin
+退出 source /etc/profile
+java -version查看是否安装成功
+
+配置yum下载文件地址
+vi /etc/yum.conf
