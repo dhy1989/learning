@@ -1,0 +1,115 @@
+1.修改ip
+ cd  /etc/sysconfig/network-scripts/ 
+ vi  ifcfg-eno16777736 
+ 修改
+ BOOTPROTO=static
+ ONBOOT=yes
+ 添加
+ IPADDR=192.168.114.100
+ GATEWAY=192.168.114.2
+ NETMASK=255.255.255.0
+ DNS1=114.114.114.114
+保存 执行service network restart
+ ping www.baidu.com
+ 查看ip: ip addr
+2.解决乱码
+ vi /etc/locale.conf
+ LANG="zh_CN.UTF-8"中文 LANG="en_US.UTF-8" 英文
+3.克隆centOS:####CentOS7.0不需要这一步修改
+  1):vi /etc/udev/rules.d/70-persistent-net.rules
+     删除第一个eth0,复制ATTR修改ip使用
+  2):修改ip
+4.修改主机名:
+ 方法一:
+ hostnamectl set-hostname hadoop100
+ 方法二:vi /etc/hostname 
+ 修改localhost.localdomain 为hadoop100
+ 重启
+5.修改hosts文件
+  vi /etc/hosts 
+  添加192.168.114.100 hadoop100 
+6.为用户赋予权限
+  vi /etc/sudoers
+  root    ALL=(ALL)       ALL
+  dhy     ALL=(ALL)       NOPASSWD:ALL
+7.添加用户
+  用户添加:useradd 用户名 例如:useradd ss
+  用户设置密码:passwd 用户名 例如:password ss
+8.安装wget插件
+ yum -y install wget
+9.修改yum源
+ cd /etc/yum.repos.d/
+ mv CentOS-Base.repo CentOS-Base.repo.bak
+ wget http://mirrors.aliyun.com/repo/Centos-7.repo
+ mv Centos-7.repo CentOS-Base.repo
+ yum clean all
+ yum makecache
+ yum update
+10.安装net-tools
+yum -y install net-tools
+11.防火墙
+firewall-cmd --state
+systemctl stop firewalld.service
+systemctl disable firewalld.service 
+开放某个端口命令: /sbin/iptables -I INPUT -p tcp --dport 8080 -j ACCEPT
+
+12.配置ssh
+第一步:ssh 192.168.1.103
+第二步:cd ~/.ssh
+第三步:ssh-keygen -t rsa 敲3次回车
+第四步:ssh-copy-id hadoop103
+注意:分别用root权限和dhy权限分别操作一次
+13.安装rsync
+ yum install rsync -y
+14.编写分发集群shell
+在/usr/local/bin
+vi xsync
+#!/bin/bash
+#1 获取输入参数个数， 如果没有参数，直接退出
+pcount=$#
+if((pcount==0)); then
+echo no args;
+exit;
+fi
+#2 获取文件名称
+p1=$1
+fname=`basename $p1`
+echo fname=$fname
+#3 获取上级目录到绝对路径
+pdir=`cd -P $(dirname $p1); pwd`
+echo pdir=$pdir
+#4 获取当前用户名称
+user=`whoami`
+for((host=102; host<104; host++)); do
+#echo $pdir/$fname $user@hadoop$host:$pdir
+echo --------------- hadoop$host ----------------
+rsync -rvl $pdir/$fname $user@hadoop$host:$pdir
+done
+
+修改文件权限
+
+15.安装vim
+  yum search vim 查询版本
+  yum install -y vim*
+  
+16.查看端口占用
+	netstat -tunlp |grep 8000
+17.查看端口是否应用
+ windows:	netstat -aon | findstr '5672'
+ linux:     netstat -anl | grep '5672
+18.安装lsof
+yum install lsof -y
+查看端口号:lsof -i:5672 
+19.配置集群的ssh访问
+ssh-keygen -t rsa 生成密钥
+ssh-copy-id hadoop103 拷贝公钥
+
+
+#查看某个进程的线程状态
+top -H -p pid
+#查看文件目录下文件,显示M(G)
+ ls -l --block-size=M(G)
+#查看内存使用状况
+free -h(显示以G为单位)
+ 
+	
