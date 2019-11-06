@@ -1,6 +1,25 @@
-#jvm一些参数
+#jv
 ##jvm优化的一些参数
-
+##jvm参数参数类型
+  * 标配参数    
+    java -version     
+    java -help  
+    java -showversion
+  * X参数(了解)  
+    -Xint 解释执行  
+    -Xcomp 第一次使用就编译成本地代码  
+    -Xmixed 混合模式
+  * __XX参数__  
+   Boolean类型 -XX:+或者-某个属性值 (+表示开启 -表示关闭)  
+   KV设值类型 例如:-XX:MetaspaceSize=128m  
+   两个经典参数: -Xms和-Xmx 这2个如何解释:-Xms相当于-XX:initialHeapSize -Xmx箱单于-XX:MaxHeapSize
+##查看参数
+  * jps 
+  * jinfo  -flag 具体参数 pid
+  * jinfo  -flags pid
+  * java -XX:+PrintFlagsInitial 所有初始化参数值
+  * java -XX:+PrintFlagsFinal -version 修改过后的参数值
+    
 
 ##jdk自带的一些工具参数
 (1)java -XX:+PrintCommandLineFlags -version 查看当前使用的是哪种垃圾收集器
