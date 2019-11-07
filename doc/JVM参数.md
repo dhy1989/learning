@@ -19,7 +19,7 @@
   * jinfo  -flags pid
   * java -XX:+PrintFlagsInitial 所有初始化参数值
   * java -XX:+PrintFlagsFinal -version 修改过后的参数值
-    
+  * java -XX:+PrintCommandLineFlags -version 查看当前使用的是哪种垃圾收集器  
 
 ##jdk自带的一些工具参数
 (1)java -XX:+PrintCommandLineFlags -version 查看当前使用的是哪种垃圾收集器
