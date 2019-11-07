@@ -39,4 +39,13 @@
  
 (4)jmap [option] LVMID map(JVM Memory Map)命令用于生成heapdump文件，如果不使用这个命令，还阔以使用-XX:+HeapDumpOnOutOfMemoryError参数来让虚拟机出现OOM的时候自动生成dump文件.jmap不仅能生成dump文件，还阔以查询finalize执行队列、Java堆和永久代的详细信息，如当前使用率当前使用的是哪种收集器等
     
-    
+##生产环境JVM参数参考
+ -Xms2g
+ -Xmx2g
+ -XX:+PrintGCDetails
+ -XX:+PrintGCTimeStamps
+ -Xloggc:./gc.log
+ -XX:+HeapDumpOnOutOfMemoryError
+ -XX:HeapDumpPath=./
+ -XX:MetaspaceSize=256m
+ -XX:+PrintFlagsFinal    
