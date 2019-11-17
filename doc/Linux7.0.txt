@@ -104,6 +104,12 @@ yum install lsof -y
 ssh-keygen -t rsa 生成密钥
 ssh-copy-id hadoop103 拷贝公钥
 
+#整机运行状况
+top
+右上角 load average 代表1分钟,5分钟,15分钟系统负载值--->如果3个值相加乘以100%的值大于60%,那么你的系统处于高负载
+按下命令1,会展示所有cpu的具体状态
+
+uptime ----精简版查看负载命令
 
 #查看某个进程的线程状态
 top -H -p pid
@@ -111,5 +117,25 @@ top -H -p pid
  ls -l --block-size=M(G)
 #查看内存使用状况
 free -h(显示以G为单位)
- 
-	
+fee -m(显示以M为单位)
+pidstat -p 进程号 -r 采样间隔秒数 -----------查看指定进程的内存情况
+
+#CPU
+vmstat
+示例:vmstat -n 2 3 ----每2秒采样一次,共计采样3次
+
+mpstat -P ALL 2  -----------查看所有CPU核信息,2代表2s
+
+pidstat -u l -p 进程号 ----------查看某个进程的具体占用资源情况
+
+#硬盘
+df
+df -h ---------------查看系统的磁盘情况
+
+#磁盘IO
+iostat
+iostat -xdk 2 3 磁盘情况采样,每2秒采样一次,采样3次
+
+#网络IO
+ifstat
+
