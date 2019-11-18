@@ -1,6 +1,6 @@
 # jv
 ## jvm优化的一些参数
-##jvm参数参数类型
+## jvm参数参数类型
   * 标配参数    
     java -version     
     java -help  
@@ -13,7 +13,7 @@
    Boolean类型 -XX:+或者-某个属性值 (+表示开启 -表示关闭)  
    KV设值类型 例如:-XX:MetaspaceSize=128m  
    两个经典参数: -Xms和-Xmx 这2个如何解释:-Xms相当于-XX:initialHeapSize -Xmx箱单于-XX:MaxHeapSize
-##查看参数
+## 查看参数
   * jps 
   * jinfo  -flag 具体参数 pid
   * jinfo  -flags pid
@@ -21,7 +21,7 @@
   * java -XX:+PrintFlagsFinal -version 修改过后的参数值
   * java -XX:+PrintCommandLineFlags -version 查看当前使用的是哪种垃圾收集器  
 
-##jdk自带的一些工具参数
+## jdk自带的一些工具参数
 (1)java -XX:+PrintCommandLineFlags -version 查看当前使用的是哪种垃圾收集器
 (2)jps [options] [hostid]  JVM Process Status Tool,显示指定系统内所有的HotSpot虚拟机进程
     option参数:
@@ -39,7 +39,7 @@
  
 (4)jmap [option] LVMID map(JVM Memory Map)命令用于生成heapdump文件，如果不使用这个命令，还阔以使用-XX:+HeapDumpOnOutOfMemoryError参数来让虚拟机出现OOM的时候自动生成dump文件.jmap不仅能生成dump文件，还阔以查询finalize执行队列、Java堆和永久代的详细信息，如当前使用率当前使用的是哪种收集器等
     
-##生产环境JVM参数参考
+## 生产环境JVM参数参考
  -Xms2g
  -Xmx2g
  -XX:+PrintGCDetails
