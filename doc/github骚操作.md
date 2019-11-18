@@ -1,9 +1,9 @@
-#github必须要会的操作
-##常见的关键字
+# github必须要会的操作
+## 常见的关键字
 watch:相当于订阅,当别人提交什么请求的时候都会通知你,一般都是not watching
 star:相当于点赞,你的个人选项下边有一个your stars可以查看你所有点赞过的项目  
 Fork:相当于你自己有了一份这个项目的拷贝,如果后期项目发生改变,你必须通过其他方式进行同步  
-##高效搜索项目
+## 高效搜索项目
 1.in查询
     SpringBoot in:name　　查找项目名称中包含SpringBoot
     SpringBoot in:name,description　　查找项目名称,描述中包含SpringBoot
