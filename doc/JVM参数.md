@@ -1,5 +1,5 @@
-#jv
-##jvm优化的一些参数
+# jv
+## jvm优化的一些参数
 ##jvm参数参数类型
   * 标配参数    
     java -version     
