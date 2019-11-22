@@ -12,7 +12,7 @@ Fork:相当于你自己有了一份这个项目的拷贝,如果后期项目发�
     SpringBoot stars:>5000　　查找点赞数超过5000的项目  
     SpringBoot forks:>5000   查找forks数大于5000的项目  
 3.数字1..数字2  区间范围数字查询  
-SpringCloud stars:200..9999 forks:100..2000　　查找stars在200~9999，forks在100~2000的项目  
+SpringCloud stars:200..9999 forks:100..2000　　查找stars在200到9999，forks在100到2000的项目  
 4.awesome   
 awesome一般是用来收集学习、工具、书籍类相关的项目   
 awesome redis　搜索优秀的redis相关项目，包括框架、教程等  
