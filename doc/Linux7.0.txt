@@ -131,6 +131,8 @@ pidstat -u l -p 进程号 ----------查看某个进程的具体占用资源情�
 #硬盘
 df
 df -h ---------------查看系统的磁盘情况
+du -h --max-depth=1 /home/work/    仅列出home目录下面所有的一级目录文件大小
+du -h --max-depth=1 /home/work/* 列出home下面所有一级目录的一级目录文件大小
 
 #磁盘IO
 iostat
