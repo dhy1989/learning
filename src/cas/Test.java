@@ -20,7 +20,5 @@ public class Test {
         map.forEach((key, value) ->
                 System.out.println(key + "------" + value)
         );
-        System.out.println("test revert");
-        System.out.println("test commit");
     }
 }
