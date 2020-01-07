@@ -21,5 +21,6 @@ public class Test {
                 System.out.println(key + "------" + value)
         );
         System.out.println("test revert");
+        System.out.println("test commit");
     }
 }
