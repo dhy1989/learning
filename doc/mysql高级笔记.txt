@@ -81,6 +81,7 @@
                                         6)UNION RESULT 从UNION表获取结果SELECT
                                     table:显示的表信息
                                     type:
+                                    参考:https://dev.mysql.com/doc/refman/5.6/en/explain-output.html#explain-join-types
                                         ALL index range ref eq_ref const system  NULL
                                         从最好到最差依次是:
                                         system>const>eq_ref>ref>range>index>ALL
