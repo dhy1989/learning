@@ -1,0 +1,33 @@
+1.查询mysql引擎:	show engines;   show variables like '%storage_engine%';
+2.创建单值索引:create index idx_user_name on user(name);
+3.创建复合索引:create index idx_user_nameEmail on user(name,email);
+4.mysql七种join连接理论:
+	1.select * from a left join b on a.id=b.id;
+	2.select * from a left join b on a.id=b.id where b.id is null;  #a独有的
+	3.select * from a right join b on a.id=b.id;
+	4.select * from a right join b on a.id=b.id where a.id is null; #b表独有
+	5.select * from a full outer join  b on a.id=b.id; 全连接 mysql不支持,使用select * from a left join b on a.id=b.id union select * from a right join b on a.id=b.id;
+	6.select * from a full outer join  b on a.id=b.id where a.id is null or b.id is null; mysql不支持:select * from a left join b on a.id=b.id where b.id is null union select * from a right join b on a.id=b.id where a.id is null;
+	7.笛卡尔积:select * from a,b;
+5.什么是索引:可以理解为排好序的快速查找数据结构
+  索引的优势:1.提高数据检索的效率,降低IO 2.通过索引列表对数据进行排序,降低数据的排序成本,降低CPU的消耗
+  索引的劣势:1.实际上索引也是一张表,该表保存了主健与索引字段,并指向实体表的记录,所以索引列也是需要占用空间的
+			 2.虽然索引大大提高了查询速度,但是会降低更新表的速度,比如对标insert,update,delete
+			 3.索引只是提高效率的一个因素,如果你有大数据量的表,就需要花时间研究建立最优秀的索引
+  索引的分类:1.单值索引:一个索引只包含单个列,一个表可以有多个单值索引
+			 2.唯一索引:索引的值必须唯一,但允许有空值
+			 3.复合索引:一个索引包含多个列
+			 创建索引的语句:create [unique] index index_name on table_name(column_name(length));
+			                alter table_name add [unique] index index_name on (column_name(length));
+			删除索引语句:drop index [index_name] on table_name;
+			查看索引:show index from table_name;
+			
+  哪些情况需要建立索引:	
+			 1.主键自动建立唯一索引
+			 2.频繁作为查询条件的字段应该创建索引
+			 3.查询中与其他表字段关联的字段,外键关系建立索引
+			 4.频繁更新的字段不适合建立索引,因为每次更新不仅更新字段,而且还更新了索引
+			 5.where条件里用不到的字段不建立索引
+			 6.单键/组合索引的选择问题,who?在高并发情况下倾向创建组合索引
+			 7.查询中排序的字段,排序字段若通过索引去访问将大大提高排序速度
+			 8.查询中统计或者分组字段
