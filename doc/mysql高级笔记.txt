@@ -18,7 +18,11 @@
 			 2.唯一索引:索引的值必须唯一,但允许有空值
 			 3.复合索引:一个索引包含多个列
 			 创建索引的语句:create [unique] index index_name on table_name(column_name(length));
-			                alter table_name add [unique] index index_name on (column_name(length));
+                          alter table_name add [unique] index index_name on (column_name(length));
+			              alter table_name add primary key(column_name):添加一个主键,这个索引值必须唯一,并且不能为null
+			              alter table_name add unique index_name(column_name):创建索引的值必须唯一(除了null以外,null值可能出现多次)
+			              alter table_name add index index_name(column_name):添加普通索引,索引值可能出现多次
+			              alter table_name add fulltext index_name(column_name):指定索引为fulltext,用于全文索引
 			删除索引语句:drop index [index_name] on table_name;
 			查看索引:show index from table_name;
 			
@@ -31,3 +35,42 @@
 			 6.单键/组合索引的选择问题,who?在高并发情况下倾向创建组合索引
 			 7.查询中排序的字段,排序字段若通过索引去访问将大大提高排序速度
 			 8.查询中统计或者分组字段
+  哪些情况不需要建立索引:
+             1.表记录太少
+             2.经常删改的表
+             3.数据重复且分布平均的表字段,因此应该只为最经常查询和最经常排序的数据列建立索引
+               注意:如果某个数据列包含许多重复的内容,为它建立索引就没有太大的实际效果
+             假如一个表有10万行记录,有一个字段A只有T和F两种值,且每个值分分布概率大约为50%,那么对这种表A字段建立索引一般不会提高查询速度
+             索引的选择性是指索引列中不同值的数目与表中记录数的比,如果一个表中有2000条记录,表索引列有1980个不同的值,那么这个索引的选择性
+             就是1980/2000=0.99,一个索引值得选择性越接近于1,那么这个索引的效率就越高
+
+   mysql性能分析:1.mysql优化器--->mysql优化器优化之后的sql并不一定符合我们的预期结果
+                2.mysql常见瓶颈----->CPU:在饱和的时候一般发生在数据装入内存或从磁盘上读取数据时候
+                                    IO:磁盘I/O瓶颈发生在装入数据远大于内存容量的时候
+                                    服务器硬件的瓶颈:top,free,iostat和vmstat来查看系统性能状态
+                3.Explain------->1)是什么(查看执行计划)
+                                    使用Explain关键字可以模拟优化器执行SQL查询语句,从而知道MYSQL是如何处理你的SQL语句的,分析
+                                    你的查询语句或是表结构的性能瓶颈
+                                    官网:https://dev.mysql.com/doc/refman/8.0/en/explain-output.html
+                                 2)能干嘛
+                                   表的读取顺序
+                                   数据读取操作的操作类型
+                                   哪些索引可以使用
+                                   哪些索引实际被使用
+                                   表之间的引用
+                                   每张表有多少行被优化器查询
+                                 3)怎么玩
+                                    Explain + SQL语句
+                                    执行计划包含信息
+                                    +----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------+
+                                    | id | select_type | table | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra |
+                                 4)各字段解释
+                                    id:select查询的序列号,包含一组数字,表示查询中执行select子句或操作表的顺序
+                                     三种情况:
+                                        1)id相同,执行顺序自上而下
+                                        2)id不同,如果是子查询,id的序号会递增,id值越大优先级越高,优先被执行
+                                        3)id相同不同,同时存在:
+                                                id相同,可以认为是一组,从上而下顺序执行;
+                                                在所有组值中,id值越大,优先级越高,越先被执行
+                                        PRIMARY=主表  DERIVED=衍生  SUBQUERY=子查询
+                                 5)案例
