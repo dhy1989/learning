@@ -104,4 +104,16 @@
                                             key_len显示的值为索引值的最大可能长度,并非实际使用长度,即key_len是根据表定义计算而得,不是通过表内检索出的
                                     ref:显示索引的哪一列被使用了,如果可能的话,是一个常数,哪些列或者常量被用于查找索引列上的值
                                     rows:根据表统计信息及索引选用情况,大致估算出找到所需的记录所读取的行数
+                                    Extra:包含但不适合在其他列展示但十分重要的额外信息
+                                        Using filesort:Mysql会对数据使用一个外部的索引排序,而不是按照表内的索引顺序进行读取,
+                                                       Mysql中无法利用索引完成的排序操作成为"文件排序",出现这项"九死一生"
+                                        Using temporary:使用了临时表保存中间结果,Mysql在查询结果排序时使用临时表,常见于order by和分组group by,出现此项"十死无生"
+                                        Using index:表示相应的select操作中使用了覆盖索引,避免了访问表的数据行,效率高,
+                                                    如果同时出现Using where,表明索引被用来执行索引键值的查找
+                                                    如果没有同时出现Using where,表明索引用来读取数据而非执行查找动作
+                                        Using where:表明使用了where过滤
+                                        Using join buffer:使用了连接缓存
+                                        impossible where:where子句值总是false,不能用来获取任何元组例如 where name='a' and name='b'
+                                        select tables optimized away:在没有group by的情况下,基于索引优化MIN/MAX操作或者MyISAM存储引擎优化count(*)操作,不必等到执行阶段再进行计算,查询执行计划生成的阶段即完成优化
+                                        distinct:优化了distinct,在查找到第一匹配元组后就停止查找
                                  5)案例
