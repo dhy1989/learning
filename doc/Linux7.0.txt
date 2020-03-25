@@ -52,7 +52,7 @@ firewall-cmd --state
 systemctl stop firewalld.service
 systemctl disable firewalld.service 
 开放某个端口命令: /sbin/iptables -I INPUT -p tcp --dport 8080 -j ACCEPT
-
+关闭某个端口命令: /sbin/iptables -A OUTPUT -p tcp --dport 8080-j DROP
 12.配置ssh
 第一步:ssh 192.168.1.103
 第二步:cd ~/.ssh
