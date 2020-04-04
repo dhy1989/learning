@@ -145,3 +145,14 @@
         like百分写最右,覆盖索引不写星
         不等空值还有or,索引失效要少用
 
+    order by优化
+    group by优化:先排序再分组,优化方法同order by,遵照索引键的最佳左前缀
+                 当无法使用索引时,增大max_length_for_sort_data参数,增大sort_buffer_size参数设置
+
+7.慢查询日志
+    查看是否开启慢查询:SHOW VARIABLES LIKE '%slow_query_log%;
+    开启慢查询:set global slow_query_log=1; (只对当前数据库生效,如果mysql重启会失效,如果需要永久生效,需要在my.conf配置,不建议永久生效)
+    查看慢查询的时间阈值;SHOW VARIABLES LIKE '%long_query_time%';
+    设置慢的阈值时间:set global long_query_time=3 (重新打开窗口查看)
+    查看慢sql条数:show global status  like '%Slow_queries%';
+    mysql日志分析工具:mysqldumpslow
