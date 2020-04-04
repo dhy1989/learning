@@ -156,5 +156,16 @@
     设置慢的阈值时间:set global long_query_time=3 (重新打开窗口查看)
     查看慢sql条数:show global status  like '%Slow_queries%';
     mysql日志分析工具:mysqldumpslow
-8.show profiles
+8.show profile
+    1.用于保存最近15次的运行结果,默认情况下参数处于关闭状态
+    2.查询是否开启:show variables like '%profiling%';
+    3.开启:set profiling=on;
+    4.查看sql:show profiles ---->显示最近运行的sql以及标记的id号
+    5.诊断sql:show profile cpu,block io for query 上一步查询的id号
+    6.结论---以下出现说明有问题:
+        converting HEAP to MyISAM 查询结果太大,内存不够用了往磁盘上边搬了
+        creating tmp table 创建临时表
+        copying to tmp table on disk 把内存中的临时表拷贝到磁盘 ---->危险
+        locked --->锁表了
+
 
