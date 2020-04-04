@@ -156,5 +156,5 @@
     设置慢的阈值时间:set global long_query_time=3 (重新打开窗口查看)
     查看慢sql条数:show global status  like '%Slow_queries%';
     mysql日志分析工具:mysqldumpslow
-8.show profile
+8.show profiles
 
