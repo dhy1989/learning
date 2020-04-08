@@ -187,5 +187,7 @@
                 MyISAM的读写锁调度是写优先,这也是myisam不适合做为主表的引擎原因,因为写锁后,其他线程不能做任何操作,大量更新会使查询很难得到锁,从而造成永远阻塞
                 SQL:show status like 'table%';
             行锁:偏向innoDB存储引擎,开销大,加锁慢,会出现死锁;锁粒度最小,发生冲突锁冲突的概率最低,并发程度最高
-             innoDB和MyISAM的最大区别就是:一支持事务,二采用了行级锁
+                innoDB和MyISAM的最大区别就是:一支持事务,二采用了行级锁
+                查看数据库事务的隔离级别:show variables like '%isolation%';
+
             页锁
