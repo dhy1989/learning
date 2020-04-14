@@ -65,7 +65,7 @@
                                     +----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------+
                                     | id | select_type | table | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra |
                                  4)各字段解释
-                                    id:select查询的序列号,包含一组数字,表示查询中执行select子句或操作表的顺序
+                                    ★id:select查询的序列号,包含一组数字,表示查询中执行select子句或操作表的顺序
                                      三种情况:
                                         1)id相同,执行顺序自上而下
                                         2)id不同,如果是子查询,id的序号会递增,id值越大优先级越高,优先被执行
@@ -80,8 +80,7 @@
                                         5)UNION   若第二个select出现在UNION之后,则被标记为UNION,若UNION包含在FROM的子句,外层SELECT被标记为:DERIVED
                                         6)UNION RESULT 从UNION表获取结果SELECT
                                     table:显示的表信息
-                                    type:
-                                    参考:https://dev.mysql.com/doc/refman/5.6/en/explain-output.html#explain-join-types
+                                    ★type:
                                         ALL index range ref eq_ref const system  NULL
                                         从最好到最差依次是:
                                         system>const>eq_ref>ref>range>index>ALL
@@ -96,4 +95,99 @@
                                               这种范围扫描索引扫描比全表扫描要好,因为它只需要开始于索引的某一点,而结束于另一点,不用扫描全部索引
                                         index:Full index scan,index和all的区别在于index类型只遍历索引树,这通常比ALL快,因为索引文件通常比数据文件小
                                               (也就是说虽然all和index都是读全表,但index是从索引中读取的,而ALL是从硬盘中读取的)
+                                        ALL:全表扫描
+                                    possible_keys:
+                                        表示理论上可能用到了哪些索引,NULL表示没有创建索引,或者索引失效
+                                    ★key:
+                                        表示实际上用到的索引,查询中若使用了覆盖索引,则该索引仅出现在key列中
+                                    key_len:表示索引中使用的字节数,可以通过该列计算查询中使用索引的长度,在不损失精确性的情况下,长度越短越好
+                                            key_len显示的值为索引值的最大可能长度,并非实际使用长度,即key_len是根据表定义计算而得,不是通过表内检索出的
+                                    ref:显示索引的哪一列被使用了,如果可能的话,是一个常数,哪些列或者常量被用于查找索引列上的值
+                                    ★rows:根据表统计信息及索引选用情况,大致估算出找到所需的记录所读取的行数
+                                    ★Extra:包含但不适合在其他列展示但十分重要的额外信息
+                                        ★Using filesort:Mysql会对数据使用一个外部的索引排序,而不是按照表内的索引顺序进行读取,
+                                                       Mysql中无法利用索引完成的排序操作成为"文件排序",出现这项"九死一生"
+                                        ★Using temporary:使用了临时表保存中间结果,Mysql在查询结果排序时使用临时表,常见于order by和分组group by,出现此项"十死无生"
+                                        ★Using index:表示相应的select操作中使用了覆盖索引,避免了访问表的数据行,效率高,
+                                                    如果同时出现Using where,表明索引被用来执行索引键值的查找
+                                                    如果没有同时出现Using where,表明索引用来读取数据而非执行查找动作
+                                        Using where:表明使用了where过滤
+                                        Using join buffer:使用了连接缓存
+                                        impossible where:where子句值总是false,不能用来获取任何元组例如 where name='a' and name='b'
+                                        select tables optimized away:在没有group by的情况下,基于索引优化MIN/MAX操作或者MyISAM存储引擎优化count(*)操作,不必等到执行阶段再进行计算,查询执行计划生成的阶段即完成优化
+                                        distinct:优化了distinct,在查找到第一匹配元组后就停止查找
                                  5)案例
+6.索引优化
+    表连接时候索引建立:
+        单表:
+        两表:左连接,索引建立在left后边表的连接字段上,例如:select * from a left join b on a.id=b.id  索引建在b表的id上边;右连接相反
+        三表:三表连接索引建立的原则和两表建立的方式一样
+    索引失效:
+        1.全值匹配我最爱
+        2.最佳左前缀法则  ----查询从索引的最左列开始匹配,中间不能跳过索引中列 例如select * from table where a=1 and c=2 索引列为a,b,c 中间少了b,会导致c失效
+        3.不在索引列上做任何操作(计算,函数,类型转换),会导致索引失效而转向全表扫描
+        4.存储引擎不能使用索引中范围条件有边的列 例如:select * from table where a='1' and b>5 and c='4'  b>5会导致后边c索引列失效
+        5.尽量使用覆盖索引(只访问索引的查询(索引列和查询列一致)),减少select * 例如:select a,b from table where a='1' and b='2' a和b为索引列
+        6.mysql在使用不等于(!= 或者 < >)时候会导致全表扫描
+        7,is null,is not null 也无法使用索引
+        8.like以通配符开头('%abc')会导致索引失效,可以使用'abc%'不会导致索引失效,如果必须要用'%abc%',可以使用覆盖索引方式
+        9.字符串不加单引号会导致索引失效,例如字段a类型是varchar,select * from table where a=1 会产生隐式转换
+        10.少用or,用它来连接时候会导致索引失效
+    一般性建议:
+            1.对于单键索引,尽量选择针对当前query过滤性更好的索引
+            2.在选择组合索引的时候,当前query中过滤性最好的字段在索引字段顺序中,位置越靠前越好
+            3.在选择组合索引的时候,尽量选择可以能够包含当前query中的where子句中更多字段的索引
+            4.尽可能通过分析统计信息和调整query的写法来达到选择从合适索引的目的
+    优化口诀:
+        全值匹配我最爱,最左前缀要遵守
+        带头大哥不能死,中间兄弟不能断
+        索引列上少计算,范围之后全失效
+        like百分写最右,覆盖索引不写星
+        不等空值还有or,索引失效要少用
+
+    order by优化
+    group by优化:先排序再分组,优化方法同order by,遵照索引键的最佳左前缀
+                 当无法使用索引时,增大max_length_for_sort_data参数,增大sort_buffer_size参数设置
+
+7.慢查询日志
+    查看是否开启慢查询:SHOW VARIABLES LIKE '%slow_query_log%;
+    开启慢查询:set global slow_query_log=1; (只对当前数据库生效,如果mysql重启会失效,如果需要永久生效,需要在my.conf配置,不建议永久生效)
+    查看慢查询的时间阈值;SHOW VARIABLES LIKE '%long_query_time%';
+    设置慢的阈值时间:set global long_query_time=3 (重新打开窗口查看)
+    查看慢sql条数:show global status  like '%Slow_queries%';
+    mysql日志分析工具:mysqldumpslow
+8.show profile
+    1.用于保存最近15次的运行结果,默认情况下参数处于关闭状态
+    2.查询是否开启:show variables like '%profiling%';
+    3.开启:set profiling=on;
+    4.查看sql:show profiles ---->显示最近运行的sql以及标记的id号
+    5.诊断sql:show profile cpu,block io for query 上一步查询的id号
+    6.结论---以下出现说明有问题:
+        converting HEAP to MyISAM 查询结果太大,内存不够用了往磁盘上边搬了
+        creating tmp table 创建临时表
+        copying to tmp table on disk 把内存中的临时表拷贝到磁盘 ---->危险
+        locked --->锁表了
+
+9.MySQL锁机制
+    对数据库操作类型分类:
+            读锁(共享锁):针对同一份数据,多个读操作可以同时进行互不干扰
+            写锁(排它锁):当前写操作没有完成之前,它会阻断其他写锁和读锁
+    对数据库操作的粒度:
+            表锁:偏向MyISAM存储引擎,开销小,加锁快;无死锁;锁粒度大,发生锁冲突的概率高,并发度低
+            案例:
+                1.show open tables;  查看数据库哪些表加锁了
+                2.lock table tb_user read,tb_book write; user表加了读锁,book表加了写锁
+                3.unlock tables; 解锁
+                读锁:lock table tb_book read; 当前会话只能读取当前的表,不能够写当前的表和读其他的表;其他会话可以读取当前表和其他表都没问题,写操作当前锁住的表会阻塞
+                写锁:lock table tb_book write;当前会话只能读或者写当前的表,不能够操作其他的表;其他会话操作当前表时候只能处于阻塞状态
+                4.如何分析表锁定
+                可以通过检查table_locks_waited和table_locks_immediate状态来分析系统上的表锁定
+                table_locks_waited:出现表级锁定争用而发生等待的次数(不能立即获取锁的次数,每等待一次锁值+1),此值高则说明存在着较严重的表级锁争用情况
+                table_locks_immediate:产生表级锁定的次数,表示可以立即获取锁的查询次数,每次获取锁值加1
+                MyISAM的读写锁调度是写优先,这也是myisam不适合做为主表的引擎原因,因为写锁后,其他线程不能做任何操作,大量更新会使查询很难得到锁,从而造成永远阻塞
+                SQL:show status like 'table%';
+            行锁:偏向innoDB存储引擎,开销大,加锁慢,会出现死锁;锁粒度最小,发生冲突锁冲突的概率最低,并发程度最高
+                innoDB和MyISAM的最大区别就是:一支持事务,二采用了行级锁
+                查看数据库事务的隔离级别:show variables like '%isolation%';
+
+            页锁
