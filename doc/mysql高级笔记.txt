@@ -189,5 +189,10 @@
             行锁:偏向innoDB存储引擎,开销大,加锁慢,会出现死锁;锁粒度最小,发生冲突锁冲突的概率最低,并发程度最高
                 innoDB和MyISAM的最大区别就是:一支持事务,二采用了行级锁
                 查看数据库事务的隔离级别:show variables like '%isolation%';
-
-            页锁
+                行锁变表锁:如果某个索引字段出现类型转换会产生行锁变表锁现象
+                间隙锁:当我们使用范围条件检索数据时,并请求共享或排他锁时,InnoDB会给符合条件的已有数据记录索引项加锁,对于键值在条件范围内但不存在的记录,叫间隙,InnoDB也会对这个间隙加锁
+                      例如:update table_name set b='b' where a>1 and a<5;(注:数据库中无a=2的数据)
+                      执行插入a=2的数据时，该插入语句会阻塞insert into table_name(a,b) values(2,'bbb')
+                锁定一行:select * from table where a=8 for update;
+                查看行锁:show status like "innodb_row_lock%";
+            页锁 了解
