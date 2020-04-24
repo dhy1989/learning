@@ -143,3 +143,6 @@ ifstat
 
 #生成带时间文件名
 `date +%Y%m%d%H`.log
+
+#linux远程连接mysql服务器:
+mysql -h 192.168.111.245 -u root -p -P 3306 --->回车--->输入密码
