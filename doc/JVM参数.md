@@ -47,5 +47,6 @@
  -Xloggc:./gc.log
  -XX:+HeapDumpOnOutOfMemoryError
  -XX:HeapDumpPath=./
- -XX:MetaspaceSize=256m
+ -XX:MetaspaceSize=256m   元空间发生 GC 的初始阈值
+ -XX:MaxMetaspaceSize=512m  元空间最大值
  -XX:+PrintFlagsFinal    
