@@ -146,3 +146,18 @@ ifstat
 
 #linux远程连接mysql服务器:
 mysql -h 192.168.111.245 -u root -p -P 3306 --->回车--->输入密码
+
+#netstat
+-a(all)显示所有选项
+-t(tcp)仅显示tcp相关
+-u(udp)仅显示udp相关
+-n拒绝显示别名,能显示数字的全部转化成数字
+-l列出有在Listen监听的服务状态
+
+-p显示建立相关链接的程序名
+-r显示路由信息,路由表
+-e显示扩展信息,例如uid等
+-s按各个协议进行统计
+-c每隔一个固定时间,执行该netstat命令
+    #根据状态统计排序
+    netstat -nat |awk '{print $6}'|sort|uniq -c|sort -rn
