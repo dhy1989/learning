@@ -22,5 +22,6 @@ public class Test {
         );
         System.out.println("test revert");
         System.out.println("test commit");
+        System.out.println("test patch");
     }
 }
