@@ -1,6 +1,7 @@
 package stream;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -19,5 +20,12 @@ public class StreamDemo {
                 .map(String::toUpperCase)
                 .peek(e -> System.out.println("Mapped value: " + e))
                 .collect(Collectors.toList());
+
+        String[] string ={"Hello","World"};
+        List<String> strings = Arrays.asList(string);
+        //map之后的["H","e","l","l","o"] ["W","o","r","l","d"]
+        List<String> collect = strings.stream().map(str -> str.split("")).flatMap(str -> Arrays.stream(str)).collect(Collectors.toList());
+        System.out.println(collect);
+         strings.stream().map(str -> str.split("")).forEach(x-> System.out.println(Arrays.asList(x)));
     }
 }
