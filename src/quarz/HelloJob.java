@@ -12,5 +12,6 @@ public class HelloJob implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         System.err.println("Hello!  HelloJob is executing.");
+        System.out.println(jobExecutionContext.getTrigger().getKey().getName());
     }
 }
