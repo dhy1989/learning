@@ -1,0 +1,28 @@
+docker常用命令:
+    dockerAPI地址:https://docs.docker.com/engine/reference
+	DockerFile构建:https://docs.docker.com/engine/reference/builder/
+	镜像:https://hub.docker.com/
+	远程仓库操作:
+	1.查找镜像
+	 docker search --filter=stars=500 mysql 过滤点赞超过500的
+	 docker search --limit=3 mysql 只展示出3个镜像
+    本地镜像操作:
+	1.docker images 列出所有镜像
+	  docker images nginx 过滤nginx相关的镜像
+	2.docker rmi -f [IMAGE ID]	强制删除镜像
+	容器操作:
+	1.docker run -p 80:80 -d nginx:latest   启动指定latest版本的nginx,映射端口
+	2.docker ps 查看运行的docker镜像
+	  docker ps -a 查看终止运行的容器
+	3.docker top mysql 查看运行的进程id
+	4.docker start :启动一个或多少已经被停止的容器
+	  docker stop :停止一个运行中的容器
+      docker restart :重启容器
+	  后边跟[CONTAINER ID]
+	5.docker exec -it [CONTAINER ID] bash  进入容器
+	  进入容器后修改服务的配置文件:
+	  如果没有vi编辑器:apt-get install vim 出错时执行:apt-get update 再:apt-get install vim
+	6.docker rm `docker ps -a|grep Exited|awk '{print $1}'` 删除终止运行的所有容器
+	  docker rm [CONTAINER ID] 删除指定容器
+	  
+	   
