@@ -96,6 +96,7 @@ done
 	netstat -tunlp |grep 8000
 17.查看端口是否应用
  windows:	netstat -aon | findstr '5672'
+            netstat -aon 根据端口号查找对应的pid
  linux:     netstat -anl | grep '5672
 18.安装lsof
 yum install lsof -y
