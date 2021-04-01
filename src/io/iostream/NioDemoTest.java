@@ -2,6 +2,8 @@ package io.iostream;
 
 import org.junit.Test;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -58,5 +60,45 @@ public class NioDemoTest {
         }
         System.out.println("---------------------");
         System.out.println("mark-->" + byteBuffer.mark());
+    }
+
+    @Test
+    public void copyFile() throws IOException {
+        FileChannel in = FileChannel.open(Paths.get("pom.xml"));
+        FileOutputStream outputStream = new FileOutputStream("pom1.xml");
+        FileChannel out = outputStream.getChannel();
+        ByteBuffer byteBuffer=ByteBuffer.allocate(100);
+        int read = in.read(byteBuffer);
+        while (read>0){
+            byteBuffer.flip();
+            out.write(byteBuffer);
+            byteBuffer.clear();
+            read = in.read(byteBuffer);
+        }
+        in.close();
+        out.close();
+        outputStream.close();
+    }
+
+    @Test
+    public void testTransferTo() throws IOException {
+        FileChannel in = FileChannel.open(Paths.get("pom.xml"));
+        FileOutputStream outputStream = new FileOutputStream("pom1.xml");
+        FileChannel out = outputStream.getChannel();
+        in.transferTo(in.position(),in.size(),out);
+        in.close();
+        out.close();
+        outputStream.close();
+    }
+
+    @Test
+    public void testTransferFrom() throws IOException {
+        FileChannel in = FileChannel.open(Paths.get("pom.xml"));
+        FileOutputStream outputStream = new FileOutputStream("pom1.xml");
+        FileChannel out = outputStream.getChannel();
+        out.transferFrom(in,in.position(),in.size());
+        in.close();
+        out.close();
+        outputStream.close();
     }
 }
