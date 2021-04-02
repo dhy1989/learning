@@ -1,5 +1,7 @@
 package stream;
 
+import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,8 +11,9 @@ import java.util.stream.Stream;
  * @author dinghy
  * @date 2020/4/12 11:05
  */
-public class StreamDemo {
-    public static void main(String[] args) {
+public class StreamTest {
+    @Test
+    public  void test() {
         long count = Arrays.stream(new int[]{1, 2, 3}).count();
         System.out.println(count);
 
@@ -28,4 +31,6 @@ public class StreamDemo {
         System.out.println(collect);
          strings.stream().map(str -> str.split("")).forEach(x-> System.out.println(Arrays.asList(x)));
     }
+
+
 }
