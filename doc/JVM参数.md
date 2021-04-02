@@ -52,3 +52,11 @@
  -XX:MetaspaceSize=256m   元空间发生 GC 的初始阈值
  -XX:MaxMetaspaceSize=512m  元空间最大值
  -XX:+PrintFlagsFinal    
+
+
+如果各项参数设置合理,系统没有超时日志出现,GC频率不高,GC耗时不高,那么没有必要进行GC优化:如果GC时间超过1-3秒,或者频繁GC,则必须优化:
+  注:如果满足下面的指标，则一般不需要进行GC:
+   Minor GC执行时间不到50ms;
+   Minor GC执行不频繁，约10秒一次;
+   Full GC执行时间不到1s;
+   Full GC执行频率不算频繁，不低于10分钟1次;
