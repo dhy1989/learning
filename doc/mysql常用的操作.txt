@@ -2,5 +2,5 @@
 ALTER TABLE 表名 ADD COLUMN 字段名 字段类型 (默认值) (COMMENT '注释')  (AFTER 字段名 ----在某个字段名之后添加此字段,不加默认添加到末尾)
 例如:
      ALTER TABLE device ADD COLUMN `device_ip` VARCHAR(32) DEFAULT NULL COMMENT '设备IP';
-
-    
+2.修改字段
+ALTER TABLE tb_message MODIFY COLUMN id INT (11) AUTO_INCREMENT;
