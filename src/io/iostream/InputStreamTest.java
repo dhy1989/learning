@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -73,5 +75,29 @@ public class InputStreamTest {
         fileInputStream.close();
         zipOutputStream.close();
         fileOutputStream.close();
+    }
+
+    @Test
+    public void testObjectOut() throws Exception {
+        Map<String,Object> map = new HashMap<>(6);
+        map.put("a",1);
+        map.put("b",2);
+        map.put("c",3);
+        map.put("d",4);
+        map.put("e",5);
+        map.put("f",6);
+        ObjectOutputStream objectOutputStream=new ObjectOutputStream(new FileOutputStream("test.txt"));
+        objectOutputStream.writeObject(map);
+        objectOutputStream.close();
+    }
+
+    @Test
+    public void testObjectInput() throws Exception {
+        ObjectInputStream objectInputStream=new ObjectInputStream(new FileInputStream("test.txt"));
+        Map<String,Object> object = (HashMap<String, Object>) objectInputStream.readObject();
+        object.forEach((k,v)->{
+            System.out.println(k+"-->"+v);
+        });
+        objectInputStream.close();
     }
 }
