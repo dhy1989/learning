@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.OptionalInt;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,6 +31,18 @@ public class StreamTest {
         List<String> collect = strings.stream().map(str -> str.split("")).flatMap(str -> Arrays.stream(str)).collect(Collectors.toList());
         System.out.println(collect);
          strings.stream().map(str -> str.split("")).forEach(x-> System.out.println(Arrays.asList(x)));
+    }
+
+    /**
+     * @description 找到满足条件跳出循环
+     * @author dinghy
+     * @date 2021/4/17 15:27
+     */
+    @Test
+    public void testForEach(){
+        int[] array={1,2,3,4,5,6,7};
+        OptionalInt any = Arrays.stream(array).filter(x->x>5).findFirst();
+        System.out.println(any.getAsInt());
     }
 
 
