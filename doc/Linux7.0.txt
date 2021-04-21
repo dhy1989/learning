@@ -135,6 +135,8 @@ df -h ---------------查看系统的磁盘情况
 du -h --max-depth=1 /home/work/    仅列出home目录下面所有的一级目录文件大小
 du -h --max-depth=1 /home/work/* 列出home下面所有一级目录的一级目录文件大小
 
+#arch
+查看linux服务器内核架构
 #磁盘IO
 iostat
 iostat -xdk 2 3 磁盘情况采样,每2秒采样一次,采样3次
