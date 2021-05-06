@@ -4,3 +4,6 @@ ALTER TABLE 表名 ADD COLUMN 字段名 字段类型 (默认值) (COMMENT '注�
      ALTER TABLE device ADD COLUMN `device_ip` VARCHAR(32) DEFAULT NULL COMMENT '设备IP';
 2.修改字段
 ALTER TABLE tb_message MODIFY COLUMN id INT (11) AUTO_INCREMENT;
+3.备份某一个表
+create table B like A;
+INSERT INTO B SELECT * FROM A;
