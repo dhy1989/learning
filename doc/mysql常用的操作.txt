@@ -7,3 +7,5 @@ ALTER TABLE tb_message MODIFY COLUMN id INT (11) AUTO_INCREMENT;
 3.备份某一个表
 create table B like A;
 INSERT INTO B SELECT * FROM A;
+4.修改表名
+rename table 旧表名 to 新表名;
