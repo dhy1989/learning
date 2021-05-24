@@ -165,3 +165,13 @@ mysql -h 192.168.111.245 -u root -p -P 3306 --->回车--->输入密码
 -c每隔一个固定时间,执行该netstat命令
     #根据状态统计排序
     netstat -nat |awk '{print $6}'|sort|uniq -c|sort -rn
+
+# find常用命令
+find .  # 列出当前目录的所有文件
+find . -name "*.txt" # 查询当前目录下以.txt结尾的文件
+find . -iname "*.txt" # 同上,但是忽略大小写
+find . ! -name "*.txt" # 查询当前目录下不是以.txt结尾的文件
+find . -name "*.txt" -o -name "*.pdf"  # 当前目录及子目录下查找所有以.txt和.pdf结尾的文件
+find . -regex ".*\(\.txt\|\.pdf\)$" # 基于正则表达式来查找文件
+find . -type 类型参数  # 根据文件类型进行搜索 类型参数常用列表:f 普通文件,l 符号连接,d 目录
+find . -type f -size +10M  # 搜索大于10M的文件
