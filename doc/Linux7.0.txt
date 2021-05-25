@@ -175,3 +175,12 @@ find . -name "*.txt" -o -name "*.pdf"  # 当前目录及子目录下查找所有
 find . -regex ".*\(\.txt\|\.pdf\)$" # 基于正则表达式来查找文件
 find . -type 类型参数  # 根据文件类型进行搜索 类型参数常用列表:f 普通文件,l 符号连接,d 目录
 find . -type f -size +10M  # 搜索大于10M的文件
+
+# which 用于查找并显示给定命令的绝对路径
+which pwd  # 结果 /usr/bin/pwd
+
+# whereis 用来定位指令的二进制程序、源代码文件和man手册页等相关文件的路径
+whereis  python
+whereis -m python # 查出说明文档路径
+whereis -s python # 查出源码文件
+
