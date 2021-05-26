@@ -12,7 +12,8 @@ import java.util.concurrent.*;
  * corePoolSize 闲置时候保持线程池的数量,类似银行人比较少时有10个柜台,但是只有3个柜台开放
  * maximumPoolSize 最大线程数量,类似银行人比较多时候,10个柜台全部开放
  *keepAliveTime 当线程数大于核心数时，这是多余的空闲线程在终止之前等待新任务的最长时间
- *
+ *cpu密集型任务应尽可能配置小的线程,如Ncpu+1个线程的线程池
+ * IO密集型任务,尽可能配置多的线程,如2*Ncpu
  * </p>
  */
 public class ThreadPoolDemo{
