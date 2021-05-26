@@ -14,6 +14,7 @@ import java.util.concurrent.*;
  *keepAliveTime 当线程数大于核心数时，这是多余的空闲线程在终止之前等待新任务的最长时间
  *cpu密集型任务应尽可能配置小的线程,如Ncpu+1个线程的线程池
  * IO密集型任务,尽可能配置多的线程,如2*Ncpu
+ * Runtime.getRuntime().availableProcessors() 获取cpu物理核数
  * </p>
  */
 public class ThreadPoolDemo{
