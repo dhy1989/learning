@@ -138,6 +138,19 @@ du -h --max-depth=1 /home/work/* 列出home下面所有一级目录的一级目�
 #查看linux服务器内核架构
 arch
 
+# uname 查看系统信息
+uname -a
+
+# Linux查看版本当前操作系统发行版信息
+cat /etc/redhat-release
+
+# 查看CPU信息
+lscpu
+
+# 查看服务器名称
+hostname
+
+
 #磁盘IO
 iostat
 iostat -xdk 2 3 磁盘情况采样,每2秒采样一次,采样3次
@@ -184,3 +197,13 @@ whereis  python
 whereis -m python # 查出说明文档路径
 whereis -s python # 查出源码文件
 
+# dstat 是一个用来替换vmstat、iostat、netstat、nfsstat和ifstat这些命令的工具，是一个全能系统信息统计工具
+#安装
+    yum install -y dstat
+    或者
+    https://centos.pkgs.org/7/centos-x86_64/dstat-0.7.2-12.el7.noarch.rpm.html
+
+# rpm
+rpm -qa|grep mysql.rpm  # 查看mysql安装的软件包
+rpm -ivh xxx.rpm  # 安装rpm安装包
+rpm -e mysql  # 卸载安装包,不可以是rpm -e proftpd-1.2.8-1.i386.rpm
