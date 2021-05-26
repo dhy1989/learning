@@ -207,3 +207,17 @@ whereis -s python # 查出源码文件
 rpm -qa|grep mysql.rpm  # 查看mysql安装的软件包
 rpm -ivh xxx.rpm  # 安装rpm安装包
 rpm -e mysql  # 卸载安装包,不可以是rpm -e proftpd-1.2.8-1.i386.rpm
+
+# crontab 定时任务
+crontab -l  # 查看定时任务
+crontab -e  # 编辑定时任务,定时任务内容例如:  00 00  * * 0 /bin/sh /usr/local/webserver/nginx/logs/mvlog.sh
+
+# firewall-cmd
+yum install firewalld firewall-config # 安装
+systemctl start  firewalld # 启动
+firewall-cmd --state # 查看状态
+systemctl disable firewalld # 停止
+systemctl stop firewalld  # 禁用
+firewall-cmd --add-port=443/tcp # 开放端口
+firewall-cmd --permanent --add-port=3690/tcp # 永久开发端口
+
