@@ -1,9 +1,7 @@
 package threadpool;
 
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * @author dinghy
@@ -19,7 +17,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ThreadPoolDemo{
     public static void main(String[] args) {
-        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(4,8,10 ,TimeUnit.MILLISECONDS,new ArrayBlockingQueue<Runnable>(10));
+        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(4,8,10 ,TimeUnit.MILLISECONDS,new ArrayBlockingQueue<Runnable>(10),new MyHandler());
         try {
             for (int i = 0; i < 25; i++) {
                 System.out.println("workCount===>"+i);
@@ -32,6 +30,7 @@ public class ThreadPoolDemo{
 
 }
 class Work implements Runnable{
+    private String name="致命任务";
     @Override
     public void run() {
         try {
@@ -40,5 +39,22 @@ class Work implements Runnable{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+}
+
+class MyHandler implements RejectedExecutionHandler {
+
+    @Override
+    public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+        System.out.println(r.getClass());
+        if(r instanceof Work){
+            Work r1 = (Work) r;
+            System.out.println(r1.getName());
+        }
+        System.out.println(executor.getTaskCount());
     }
 }
